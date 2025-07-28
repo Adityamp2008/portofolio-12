@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Skill;
+use App\Models\Informasi;
 
 class SkillController extends Controller
 {
@@ -14,7 +15,8 @@ class SkillController extends Controller
     public function index()
     {
         $skills = Skill::all();
-        return view('pages.admin.skill.index', compact('skills'));
+        $informasi = Informasi::first();
+        return view('pages.admin.skill.index', compact('skills','informasi'));
     }
 
     /**

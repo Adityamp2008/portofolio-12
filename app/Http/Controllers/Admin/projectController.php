@@ -5,13 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\project;
+use App\Models\Informasi;
 
 class projectController extends Controller
 {
     public function index()
     {
-        $projects = project::all(); // Semua project
-        return view('pages.admin.project.index', compact('projects'));
+        $projects = project::all(); 
+        $informasi = Informasi::first();// Semua project
+        return view('pages.admin.project.index', compact('projects','informasi'));
     }
 
     public function create()
