@@ -19,6 +19,19 @@
                 </div>
             @endif
 
+            <form method="GET" action="{{ route('project.index') }}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Cari nama project..." value="{{ request('search') }}">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="bi bi-search"></i> Cari
+                    </button>
+                </div>
+            </form>
+
+            @if(request('search'))
+                <p class="text-muted">Menampilkan hasil untuk: <strong>{{ request('search') }}</strong></p>
+            @endif
+
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
@@ -34,7 +47,7 @@
                     <tbody>
                         @forelse ($projects as $index => $project)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $loop->iteration + ($projects->currentPage() - 1) * $projects->perPage() }}</td>
                                 <td>
                                     @if($project->foto)
                                         <img src="{{ asset('image/' . $project->foto) }}" alt="{{ $project->nama_project }}" class="img-fluid rounded" style="width: 120px; height: 80px; object-fit: cover;">
@@ -69,6 +82,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                {{ $projects->links('pagination::bootstrap-5') }}
             </div>
 
         </div>

@@ -9,29 +9,33 @@ use App\Models\Informasi;
 
 class SkillController extends Controller
 {
-    /**
-     * Tampilkan semua data skill.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $skills = Skill::all();
+        $query = $request->input('search');
+
+        $skills = Skill::when($query, function ($q) use ($query) {
+                return $q->where('nama', 'like', "%{$query}%");
+            })
+            ->latest()
+            ->paginate(5)
+            ->appends(['search' => $query]);
+
         $informasi = Informasi::first();
-        return view('pages.admin.skill.index', compact('skills','informasi'));
+
+        return view('pages.admin.skill.index', compact('skills', 'informasi', 'query'));
     }
 
-    /**
-     * Tampilkan form tambah skill.
-     */
     public function create()
     {
-        return view('pages.admin.skill.create');
+        $informasi = Informasi::first();
+
+        return view('pages.admin.skill.create', compact('informasi'));
     }
 
-    /**
-     * Simpan data skill baru.
-     */
+
     public function store(Request $request)
     {
+        
         $request->validate([
             'nama' => 'required|string|max:100'
         ]);
@@ -48,17 +52,13 @@ class SkillController extends Controller
         //
     }
 
-    /**
-     * Tampilkan form edit skill.
-     */
     public function edit(Skill $skill)
     {
-        return view('pages.admin.skill.edit', compact('skill'));
+        $informasi = Informasi::first();
+
+        return view('pages.admin.skill.edit', compact('skill','informasi'));
     }
 
-    /**
-     * Update data skill.
-     */
     public function update(Request $request, Skill $skill)
     {
         $request->validate([
@@ -72,9 +72,6 @@ class SkillController extends Controller
         return redirect()->route('skill.index')->with('success', 'Skill berhasil diperbarui!');
     }
 
-    /**
-     * Hapus skill.
-     */
     public function destroy(Skill $skill)
     {
         $skill->delete();

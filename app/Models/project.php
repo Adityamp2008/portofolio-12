@@ -14,4 +14,5 @@ class project extends Model
         'link_project',
         'foto',
     ];
+    public $timestamps = true;
 }

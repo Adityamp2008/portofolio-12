@@ -19,6 +19,18 @@
                 </div>
             @endif
 
+            <form method="GET" action="{{ route('skill.index') }}" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Cari nama skill...">
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="bi bi-search"></i>Cari</button>
+                </div>
+            </form>
+
+            @if(request('search'))
+                <p class="text-muted">Hasil untuk: <strong>{{ request('search') }}</strong></p>
+            @endif
+
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
@@ -29,9 +41,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($skills as $index => $skill)
+                        @forelse ($skills as $skill)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $loop->iteration + ($skills->currentPage() - 1) * $skills->perPage() }}</td>
                                 <td class="fw-bold">{{ $skill->nama }}</td>
                                 <td>
                                     <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('skill.destroy', $skill->id) }}" method="POST">
@@ -44,7 +56,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center">
+                                <td colspan="3" class="text-center">
                                     <div class="alert alert-danger">
                                         Data skill belum tersedia.
                                     </div>
@@ -53,6 +65,10 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <div class="d-flex justify-content-center mt-3">
+                {{ $skills->links('pagination::bootstrap-5') }}
             </div>
 
         </div>

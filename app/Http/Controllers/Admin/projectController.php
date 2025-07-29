@@ -9,16 +9,27 @@ use App\Models\Informasi;
 
 class projectController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $projects = project::all(); 
-        $informasi = Informasi::first();// Semua project
-        return view('pages.admin.project.index', compact('projects','informasi'));
+        $query = $request->input('search');
+
+        $projects = project::when($query, function ($q) use ($query) {
+                return $q->where('nama_project', 'like', "%{$query}%");
+            })
+            ->latest()
+            ->paginate(5)
+            ->appends(['search' => $query]); 
+
+        $informasi = Informasi::first();
+
+        return view('pages.admin.project.index', compact('projects', 'informasi', 'query'));
     }
 
     public function create()
     {
-        return view('pages.admin.project.create');
+            $informasi = Informasi::first();
+
+        return view('pages.admin.project.create',compact('informasi'));
     }
 
     public function store(Request $request)
@@ -50,7 +61,8 @@ class projectController extends Controller
     public function edit($id)
     {
         $project = project::findOrFail($id);
-        return view('pages.admin.project.edit', compact('project'));
+        $informasi = Informasi::first();
+        return view('pages.admin.project.edit', compact('project','informasi'));
     }
 
     public function update(Request $request, $id)
@@ -65,7 +77,6 @@ class projectController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
             if ($project->foto && file_exists(public_path('image/' . $project->foto))) {
                 unlink(public_path('image/' . $project->foto));
             }
@@ -85,7 +96,6 @@ class projectController extends Controller
     {
         $project = project::findOrFail($id);
 
-        // Hapus foto dari public/image
         if ($project->foto && file_exists(public_path('image/' . $project->foto))) {
             unlink(public_path('image/' . $project->foto));
         }

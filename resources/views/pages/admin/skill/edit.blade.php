@@ -28,11 +28,6 @@
                     <input type="text" name="nama" id="nama" class="form-control" value="{{ old('nama', $skill->nama) }}" required>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Preview Logo</label><br>
-                    <img src="{{ $skill->logo_url }}" alt="{{ $skill->nama }}" class="img-thumbnail" style="max-width: 150px;">
-                </div>
-
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Simpan Perubahan
                 </button>
