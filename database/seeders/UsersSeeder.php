@@ -13,7 +13,7 @@ class UsersSeeder extends Seeder
         DB::table('users')->insert([
     'name' => 'Admin',
     'username' => 'admin',
-    'password' => Hash::make('admin123'),
+    'password' => Hash::make(env('ADMIN_PASSWORD')),
     'created_at' => now(),
     'updated_at' => now(),
 ]);
