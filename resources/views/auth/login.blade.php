@@ -41,7 +41,6 @@
                 <input type="checkbox" name="remember" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
                 <span class="ml-2 text-gray-600">Ingat Saya</span>
             </label>
-            <a href="#" class="text-blue-600 hover:underline">Lupa Password?</a>
         </div>
 
         {{-- Submit --}}
@@ -50,10 +49,5 @@
             Masuk
         </button>
     </form>
-
-    <p class="text-center text-sm text-gray-600 mt-6">
-        Belum punya akun?
-        <a href="#" class="text-blue-600 hover:underline font-medium">Daftar di sini</a>
-    </p>
 </div>
 @endsection

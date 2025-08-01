@@ -111,7 +111,7 @@
 
     <footer class="bg-gray-800 py-6 mt-10">
         <div class="text-center text-gray-400">
-            <p>&copy; {{ date('Y') }} {{ $informasi->nama_panggilan ?? 'Kosong' }}. Dibuat dengan Laravel & Tailwind CSS.</p>
+            <p>&copy; {{ date('Y') }} {{ $informasi->nama_panggilan ?? 'Kosong' }}. Dibuat dengan Laravel </p>
         </div>
     </footer>
 
