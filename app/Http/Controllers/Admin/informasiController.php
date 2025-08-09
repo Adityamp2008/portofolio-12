@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,29 +9,31 @@ use App\Models\Informasi;
 class informasiController extends Controller
 {
     /**
-     * Menampilkan data informasi jika ada, jika tidak arahkan ke create.
+     * Display a listing of the resource.
      */
     public function index()
     {
-        $informasi = Informasi::first();
+                $informasi = Informasi::first();
 
         if (!$informasi) {
             return redirect()->route('informasi.create');
         }
 
         return view('pages.admin.informasi.index', compact('informasi'));
+
     }
 
     /**
-     * Menampilkan form untuk menambahkan data informasi baru.
+     * Show the form for creating a new resource.
      */
     public function create()
     {
         return view('pages.admin.informasi.create');
+
     }
 
     /**
-     * Menyimpan data informasi baru.
+     * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
@@ -65,25 +67,35 @@ class informasiController extends Controller
             $foto->move(public_path('image'), $namaFoto);
             $informasi->foto = $namaFoto;
         }
-
-        $informasi->save();
+         $informasi->save();
 
         return redirect()->route('informasi.index')->with('success', 'Informasi berhasil ditambahkan.');
+
+
+
     }
 
     /**
-     * Menampilkan form edit.
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
         $informasi = Informasi::findOrFail($id);
-        return view('pages.admin.informasi.edit', compact('informasi'));
+        return view('pages.admin.informasi.edit', compact('informasi')); 
     }
 
     /**
-     * Menyimpan update data.
+     * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
         try {
             $informasi = Informasi::findOrFail($id);
@@ -100,7 +112,6 @@ class informasiController extends Controller
                 'deskripsi' => 'required|string',
                 'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ]);
-
             $informasi->nama_lengkap = $request->nama_lengkap;
             $informasi->nama_panggilan = $request->nama_panggilan;
             $informasi->pekerjaan = $request->pekerjaan;
@@ -118,6 +129,7 @@ class informasiController extends Controller
                 $informasi->foto = $namaFoto;
             }
 
+            
             $informasi->save();
 
             return redirect()->back()->with('success', 'Informasi berhasil diperbarui.');
@@ -126,13 +138,15 @@ class informasiController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+
+
     }
 
     /**
-     * Menghapus data (jika dibutuhkan nanti).
+     * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        // Optional jika butuh fitur hapus
+        //
     }
 }
